@@ -49,7 +49,7 @@
     "compounds": [
         {
             "name": "Compound",
-            "configurations": ["Server", "Client"]
+            "configurations": ["Server(1)", "Client(1)"]
         }
     ]
 }
