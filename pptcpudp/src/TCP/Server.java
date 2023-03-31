@@ -1,34 +1,26 @@
 package TCP;
 
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
-
 
 public class Server {
-    public static void main(String[] args) {
-      try {
-        // Instancia o ServerSocket ouvindo a porta 12345
-        ServerSocket servidor = new ServerSocket(12345);
-        System.out.println("Servidor ouvindo a porta 12345");
-        while(true) {
-          // o método accept() bloqueia a execução até que
-          // o servidor receba um pedido de conexão
-          Socket cliente = servidor.accept();
-          System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
-          ObjectOutputStream saida = new ObjectOutputStream(cliente.getOutputStream());
-          saida.flush();
-          saida.writeObject(new Date());
-          saida.close();
-          cliente.close();
-          servidor.close();
+    public static void main(String[] args) throws Exception{
+      ServerSocket serverSocket = new ServerSocket(5555);
+      Socket socket = serverSocket.accept();
+      System.out.println("Estabelecida a conexão");
+      DataInputStream dis = new DataInputStream(socket.getInputStream());
+      
+      while(true){
+        String s = dis.readUTF();
+        System.out.println("cliente diz: "+s);
+        if(s.equalsIgnoreCase("sair")){
+          break;
         }
       }
-      catch(Exception e) {
-         System.out.println("Erro: " + e.getMessage());
-      }
-      
+      socket.close();
+      serverSocket.close();
     }
   }
